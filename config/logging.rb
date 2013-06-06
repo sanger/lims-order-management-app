@@ -1,7 +1,7 @@
 require 'logger'
 
 module Lims
-  module BridgeApp
+  module OrderManagementApp
     module Logging
 
       def self.logger_instance

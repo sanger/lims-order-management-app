@@ -1,0 +1,11 @@
+defaults: &defaults
+  url: "http://localhost:9292"
+
+test:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
