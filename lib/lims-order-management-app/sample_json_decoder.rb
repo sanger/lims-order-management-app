@@ -1,5 +1,6 @@
 require 'lims-management-app/sample/sample'
 require 'json'
+require 'common'
 
 module Lims::OrderManagementApp
   module SampleJsonDecoder
@@ -28,11 +29,11 @@ module Lims::OrderManagementApp
     module SampleDecoder
       def self.call(json)
         sample_hash = json["sample"]
-        sample(sample_hash)
+        [sample(sample_hash)]
       end
 
-      def self.sample(sample_hash, options)
-        sample = Lims::ManagementApp::Sample.new
+      def self.sample(sample_hash)
+        sample = Lims::ManagementApp::Sample.new({})
         sample_hash.each do |k,v|
           sample.send("#{k}=", v) if sample.respond_to?("#{k}=")
         end
@@ -48,19 +49,19 @@ module Lims::OrderManagementApp
         samples_hash.each do |sample_hash|
           samples << SampleJsonDecoder::SampleDecoder.sample(sample_hash)
         end
-        {:samples => samples}
+        samples
       end
     end
 
     module BulkCreateSampleDecoder
-      def call(json)
-        BulkSampleJsonDecoder.call("bulk_create_sample", json)
+      def self.call(json)
+        SampleJsonDecoder::BulkSampleDecoder.call("bulk_create_sample", json)
       end
     end
 
     module BulkUpdateSampleDecoder
-      def call(json)
-        BulkSampleJsonDecoder.call("bulk_create_sample", json)
+      def self.call(json)
+        SampleJsonDecoder::BulkSampleDecoder.call("bulk_create_sample", json)
       end
     end
   end
