@@ -1,6 +1,5 @@
 defaults: &defaults
   url: "amqp://localhost:5672"
-  exchange_name: "psd.s2"
   queue_name: "psd.s2.samples"
   durable: true
   empty_queue_disconnect_interval: 0
