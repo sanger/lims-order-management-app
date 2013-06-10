@@ -11,10 +11,12 @@ module Lims::OrderManagementApp
     ]
 
     def matching_rule(sample)
-      RULES.each do |rule, pipeline|
-        if rule[:sample_type] == sample.sample_type &&
-          rule[:lysed] = sample.cellular_material.lysed
-          return pipeline
+      RULES.each do |rule|
+        rule.each do |criteria, pipeline|
+          if criteria[:sample_type] == sample.sample_type &&
+            criteria[:lysed] = sample.cellular_material.lysed
+            return pipeline
+          end
         end
       end
 
