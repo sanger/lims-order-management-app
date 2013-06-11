@@ -8,14 +8,19 @@ module Lims::OrderManagementApp
     include Helpers::API
 
     TubeNotFound = Class.new(StandardError)
-    INPUT_TUBE_ROLE = "samples.extraction.manual.dna_and_rna.input_tube_nap"
-    USER_UUID = "66666666-2222-4444-9999-000000000000"
-    STUDY_UUID = "55555555-2222-3333-6666-777777777777"
-    COST_CODE = "cost code"
+
+    attribute :input_tube_role, String, :required => true, :writer => :private
+    attribute :user_uuid, String, :required => true, :writer => :private
+    attribute :study_uuid, String, :required => true, :writer => :private
+    attribute :cost_code, String, :required => true, :writer => :private
 
     # @param [Hash] api_settings
-    def initialize(api_settings)
+    def initialize(order_settings, api_settings)
       url = api_settings["url"]      
+      @input_tube_role = order_settings["input_tube_role"]
+      @user_uuid = order_settings["user_uuid"]
+      @study_uuid = order_settings["study_uuid"]
+      @cost_code = order_settings["cost_code"]
       initialize_api(url)
     end
 
@@ -63,11 +68,11 @@ module Lims::OrderManagementApp
     # @return [Hash]
     def generate_order_parameters(tube_uuids, pipeline)
       {:order => {}.tap do |p|
-        p[:user_uuid] = USER_UUID 
-        p[:study_uuid] = STUDY_UUID 
+        p[:user_uuid] = user_uuid 
+        p[:study_uuid] = study_uuid 
         p[:pipeline] = pipeline
-        p[:cost_code] = COST_CODE 
-        p[:sources] = {INPUT_TUBE_ROLE => tube_uuids}
+        p[:cost_code] = cost_code 
+        p[:sources] = {input_tube_role => tube_uuids}
       end
       }
     end

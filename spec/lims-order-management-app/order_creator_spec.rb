@@ -24,7 +24,13 @@ module Lims::OrderManagementApp
       }
     }
 
-    let(:creator) { described_class.new({}).tap do |c|
+    let(:order_settings) { {
+      "user_uuid" => "66666666-2222-4444-9999-000000000000",
+      "study_uuid" => "55555555-2222-3333-6666-777777777777",
+      "cost_code" => "cost code",
+      "input_tube_role" => "role"
+    }}
+    let(:creator) { described_class.new(order_settings, {}).tap do |c|
       c.stub(:post) { |a| a }
       c.stub(:get) { mocked_tubes }
     end
@@ -57,7 +63,7 @@ module Lims::OrderManagementApp
           :pipeline => pipeline,
           :cost_code => "cost code",
           :sources => {
-            described_class::INPUT_TUBE_ROLE => ["11111111-2222-3333-4444-666666666666", "11111111-2222-3333-4444-888888888888"]
+            "role" => ["11111111-2222-3333-4444-666666666666", "11111111-2222-3333-4444-888888888888"]
           }
         }
       } }
