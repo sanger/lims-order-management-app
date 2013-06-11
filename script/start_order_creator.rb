@@ -6,8 +6,9 @@ module Lims
   module OrderManagementApp
     amqp_settings = YAML.load_file(File.join('config','amqp.yml'))["production"] 
     api_settings = YAML.load_file(File.join('config','api.yml'))["production"]
+    order_settings = YAML.load_file(File.join('config','order.yml'))["production"]
 
-    creator = SampleConsumer.new(amqp_settings, api_settings)
+    creator = SampleConsumer.new(order_settings, amqp_settings, api_settings)
     creator.set_logger(Logging::LOGGER)
 
     Logging::LOGGER.info("Order Creator started")
