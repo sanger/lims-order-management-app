@@ -1,7 +1,5 @@
 require 'common'
 require 'lims-order-management-app/helpers/api'
-require 'rubygems'
-require 'ruby-debug/debugger'
 
 module Lims::OrderManagementApp
   class OrderCreator
