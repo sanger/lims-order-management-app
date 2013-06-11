@@ -1,7 +1,7 @@
 module Lims::OrderManagementApp
   module RuleMatcher
    
-    NonMatchingRule = Class.new(StandardError)
+    NoMatchingRule = Class.new(StandardError)
 
     CELL_PELLET = "Cell Pellet"
     DNA_RNA_EXTRACTION = 'DNA & RNA Extraction'
@@ -10,6 +10,8 @@ module Lims::OrderManagementApp
       {:sample_type => CELL_PELLET, :lysed => true} => DNA_RNA_EXTRACTION
     ]
 
+    # @param [Lims::ManagementApp::Sample] sample
+    # @return [String]
     def matching_rule(sample)
       RULES.each do |rule|
         rule.each do |criteria, pipeline|
@@ -20,7 +22,7 @@ module Lims::OrderManagementApp
         end
       end
 
-      raise NonMatchingRule
+      raise NoMatchingRule
     end
 
   end
