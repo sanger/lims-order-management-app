@@ -38,6 +38,8 @@ module Lims::OrderManagementApp
     private
 
     # @param [Array] samples
+    # Delete all the samples which are not in a published state.
+    # If no samples remain, raise an exception.
     def before_filter!(samples)
       samples.reject! do |resource|
         resource[:sample].state != SAMPLE_PUBLISHED_STATE 
@@ -58,26 +60,30 @@ module Lims::OrderManagementApp
       end
     end
 
+    # @param [AMQP::Header] metadata
+    # @param [String] payload
     def consume_message(metadata, payload)
       begin
         samples = sample_resource(payload)
-        # TODO : before_filter!(samples)
+        before_filter!(samples)
         # TODO: we assume hereby that all the samples 
         # have the same sample_type and the same lysed option.
         pipeline = matching_rule(samples.first[:sample])
         order_creator.execute(samples, pipeline)
-      rescue NoSamplePublished, RuleMatcher::NonMatchingRule => e
+      rescue NoSamplePublished, RuleMatcher::NoMatchingRule => e
         metadata.reject
         log.error("Sample message rejected: #{e}")
       rescue OrderCreator::TubeNotFound => e
         metadata.reject(:requeue => true)
         log.error("Sample message requeued: #{e}")
       else
-        #metadata.ack
+        metadata.ack
         log.info("Sample message processed and acknowledged. Order created.")
       end
     end
 
+    # @param [String] routing_key
+    # @return [Bool]
     def expected_message?(routing_key)
       EXPECTED_ROUTING_KEY_PATTERNS.each do |pattern|
         return true if routing_key.match(pattern)
