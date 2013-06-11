@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: 88e79be02617f0c003b3e30bf984abd3fffa4abd
-  branch: development
+  revision: d1b0a6bf030490a89eed7d1eaf0c290b33d23240
+  branch: master
   specs:
-    lims-core (2.1.0.2.0)
+    lims-core (2.1.1)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -22,8 +22,8 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-busclient.git
-  revision: 69c199492de024c1a7fa3aee91694641e51a2965
-  branch: development
+  revision: 93b50fe11c6d07d8f19ede9ac13a8440f7c57b7e
+  branch: master
   specs:
     lims-busclient (0.2.0)
       aequitas
@@ -33,8 +33,8 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-management-app.git
-  revision: 645d0e0c14cd3948097112fb6c272fc0ed3c5d08
-  branch: development
+  revision: 252ae0a1de589c797e80116d02f8b8d048b59c72
+  branch: master
   specs:
     lims-management-app (1.4.0)
       bunny (= 0.9.0.pre10)
@@ -126,7 +126,7 @@ DEPENDENCIES
   debugger-completion
   lims-busclient (~> 0.2.0)!
   lims-core (~> 2.1)!
-  lims-management-app (~> 1.2)!
+  lims-management-app (~> 1.4)!
   lims-order-management-app!
   psd_logger!
   rake
