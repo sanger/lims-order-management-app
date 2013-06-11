@@ -9,6 +9,9 @@ module Lims::OrderManagementApp
 
     TubeNotFound = Class.new(StandardError)
     INPUT_TUBE_ROLE = "samples.extraction.manual.dna_and_rna.input_tube_nap"
+    USER_UUID = "66666666-2222-4444-9999-000000000000"
+    STUDY_UUID = "55555555-2222-3333-6666-777777777777"
+    COST_CODE = "cost code"
 
     # @param [Hash] api_settings
     def initialize(api_settings)
@@ -60,10 +63,10 @@ module Lims::OrderManagementApp
     # @return [Hash]
     def generate_order_parameters(tube_uuids, pipeline)
       {:order => {}.tap do |p|
-        p[:user_uuid] = "66666666-2222-4444-9999-000000000000"
-        p[:study_uuid] = "55555555-2222-3333-6666-777777777777"
+        p[:user_uuid] = USER_UUID 
+        p[:study_uuid] = STUDY_UUID 
         p[:pipeline] = pipeline
-        p[:cost_code] = "cost code"
+        p[:cost_code] = COST_CODE 
         p[:sources] = {INPUT_TUBE_ROLE => tube_uuids}
       end
       }
