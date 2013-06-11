@@ -7,16 +7,21 @@ module Lims::OrderManagementApp
 
     UndefinedDecoder = Class.new(StandardError)
 
-    private
-
     # @param [String] payload
-    # @return [Object] sample resource
+    # @return [Array] sample resources
+    # @example
+    # [
+    #   {:sample => Sample_1, :uuid => 'xxxx'},
+    #   {:sample => Sample_2, :uuid => 'xxxx'}
+    # ]
     def sample_resource(payload)
       body = JSON.parse(payload)
       model = body.keys.first
       sample_decoder_for(model).call(body)
     end
 
+    # @param [String] model
+    # @return [Constant]
     def sample_decoder_for(model)
       begin
         decoder = "#{model.to_s.capitalize.gsub(/_./) {|p| p[1].upcase}}Decoder"
@@ -33,7 +38,7 @@ module Lims::OrderManagementApp
       end
 
       def self.sample(sample_hash)
-        sample = Lims::ManagementApp::Sample.new({})
+        sample = Lims::ManagementApp::Sample.new
         sample_hash.each do |k,v|
           sample.send("#{k}=", v) if sample.respond_to?("#{k}=")
         end
