@@ -126,7 +126,7 @@ DEPENDENCIES
   debugger-completion
   lims-busclient (~> 0.2.0)!
   lims-core (~> 2.1)!
-  lims-management-app (~> 1.2)!
+  lims-management-app (~> 1.4)!
   lims-order-management-app!
   psd_logger!
   rake
