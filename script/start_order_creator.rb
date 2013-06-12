@@ -6,7 +6,7 @@ require 'logging'
 
 module Lims
   module OrderManagementApp
-    env = ENV["LIMS_WAREHOUSEBUILDER_ENV"]
+    env = ENV["LIMS_ORDER_MANAGEMENT_ENV"]
     amqp_settings = YAML.load_file(File.join('config','amqp.yml'))[env]
     api_settings = YAML.load_file(File.join('config','api.yml'))[env]
     order_settings = YAML.load_file(File.join('config','order.yml'))[env]
