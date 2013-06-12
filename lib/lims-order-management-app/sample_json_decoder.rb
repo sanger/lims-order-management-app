@@ -66,7 +66,7 @@ module Lims::OrderManagementApp
 
     module BulkUpdateSampleDecoder
       def self.call(json)
-        SampleJsonDecoder::BulkSampleDecoder.call("bulk_create_sample", json)
+        SampleJsonDecoder::BulkSampleDecoder.call("bulk_update_sample", json)
       end
     end
   end
