@@ -1,12 +1,15 @@
+ENV["LIMS_ORDER_MANAGEMENT_ENV"] = "development" unless ENV["LIMS_ORDER_MANAGEMENT_ENV"]
+
 require 'yaml'
 require 'lims-order-management-app'
 require 'logging'
 
 module Lims
   module OrderManagementApp
-    amqp_settings = YAML.load_file(File.join('config','amqp.yml'))["production"] 
-    api_settings = YAML.load_file(File.join('config','api.yml'))["production"]
-    order_settings = YAML.load_file(File.join('config','order.yml'))["production"]
+    env = ENV["LIMS_WAREHOUSEBUILDER_ENV"]
+    amqp_settings = YAML.load_file(File.join('config','amqp.yml'))[env]
+    api_settings = YAML.load_file(File.join('config','api.yml'))[env]
+    order_settings = YAML.load_file(File.join('config','order.yml'))[env]
 
     creator = SampleConsumer.new(order_settings, amqp_settings, api_settings)
     creator.set_logger(Logging::LOGGER)
