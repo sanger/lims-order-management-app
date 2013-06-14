@@ -33,17 +33,17 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-management-app.git
-  revision: 252ae0a1de589c797e80116d02f8b8d048b59c72
+  revision: 96daf62cd041a2eef25af0e2243d677c072425d6
   branch: master
   specs:
-    lims-management-app (1.4.0)
+    lims-management-app (1.5.0)
       bunny (= 0.9.0.pre10)
       json
 
 PATH
   remote: .
   specs:
-    lims-order-management-app (0.2.0)
+    lims-order-management-app (0.2.1)
       aequitas
       amqp
       facets
@@ -126,7 +126,7 @@ DEPENDENCIES
   debugger-completion
   lims-busclient (~> 0.2.0)!
   lims-core (~> 2.1)!
-  lims-management-app (~> 1.4)!
+  lims-management-app (~> 1.5)!
   lims-order-management-app!
   psd_logger!
   rake
