@@ -7,13 +7,15 @@ module Lims::OrderManagementApp
     let(:matcher) { Class.new { include RuleMatcher }.new }
 
     context "rule matched" do
-      let(:sample) { Lims::ManagementApp::Sample.new(
-        { :sample_type        => "Cell Pellet",
-          :cellular_material  => {:lysed => true, :extraction_process => "DNA & RNA Extraction"}
-        })
-      }
+      let(:samples_to_roles) { {
+        'DNA & RNA Manual'  => 'samples.extraction.manual.dna_and_rna.input_tube_nap',
+        'DNA & RNA QIAcube' => 'samples.extraction.qiacube.dna_and_rna.input_tube_nap'
+      } }
+
       it "returns the correct pipeline" do
-        matcher.matching_rule(sample).should == sample.cellular_material.extraction_process
+        samples_to_roles.each do |process, role|
+          matcher.matching_rule({ :cellular_material => { :extraction_process => process } }).should == role
+        end
       end
     end
 
