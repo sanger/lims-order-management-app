@@ -1,4 +1,4 @@
-ENV["LIMS_ORDER_MANAGEMENT_ENV"] = "development" unless ENV["LIMS_ORDER_MANAGEMENT_ENV"]
+env = ENV["LIMS_ORDER_MANAGEMENT_APP_ENV"] or raise "LIMS_ORDER_MANAGEMENT_APP_ENV is not set in the environment"
 
 require 'yaml'
 require 'lims-order-management-app'
@@ -6,7 +6,6 @@ require 'logging'
 
 module Lims
   module OrderManagementApp
-    env = ENV["LIMS_ORDER_MANAGEMENT_ENV"]
     amqp_settings = YAML.load_file(File.join('config','amqp.yml'))[env]
     api_settings = YAML.load_file(File.join('config','api.yml'))[env]
     order_settings = YAML.load_file(File.join('config','order.yml'))[env]
