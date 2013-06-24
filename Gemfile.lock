@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-busclient.git
-  revision: 93b50fe11c6d07d8f19ede9ac13a8440f7c57b7e
+  revision: fe61ca90f8343c689febeecea7657c284e51e5df
   branch: master
   specs:
-    lims-busclient (0.2.0)
+    lims-busclient (0.3.0)
       aequitas
       amqp
       facets
@@ -43,7 +43,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-order-management-app (0.2.2)
+    lims-order-management-app (0.2.3)
       aequitas
       amqp
       facets
@@ -124,7 +124,7 @@ PLATFORMS
 DEPENDENCIES
   debugger
   debugger-completion
-  lims-busclient (~> 0.2.0)!
+  lims-busclient (~> 0.3.0)!
   lims-core (~> 2.1)!
   lims-management-app (~> 1.5)!
   lims-order-management-app!
