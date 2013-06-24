@@ -4,8 +4,8 @@ module Lims::OrderManagementApp
     NoMatchingRule = Class.new(StandardError)
 
     RULES = [
-      [ { 'cellular_material.extraction_process' => 'DNA & RNA Manual' },  'samples.extraction.manual.dna_and_rna.input_tube_nap'  ],
-      [ { 'cellular_material.extraction_process' => 'DNA & RNA QIAcube' }, 'samples.extraction.qiacube.dna_and_rna.input_tube_nap' ]
+      [ { 'cellular_material.extraction_process' => 'DNA & RNA Manual' },  'samples.extraction.manual_dna_and_rna.input_tube_nap'  ],
+      [ { 'cellular_material.extraction_process' => 'DNA & RNA QIAcube' }, 'samples.extraction.qiacube_dna_and_rna.input_tube_nap' ]
     ]
 
     # @param [Lims::ManagementApp::Sample] sample
