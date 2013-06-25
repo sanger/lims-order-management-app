@@ -7,7 +7,8 @@ module Lims::OrderManagementApp
     before do
       Lims::OrderManagementApp::OrderCreator.any_instance.stub(
         :initialize_api => nil,
-        :url_for => mocked_search
+        :url_for => mocked_search,
+        :ruleset => ruleset
       )
     end
 
@@ -24,13 +25,32 @@ module Lims::OrderManagementApp
       }
     }
 
+    let(:ruleset) {
+      { "rules" =>
+        [
+          [{"samples.extraction.manual_dna_and_rna.input_tube_nap"=>
+            {"cellular_material.extraction_process"=>"DNA & RNA Manual"},
+          }],
+          [{"samples.extraction.qiacube_dna_and_rna.input_tube_nap"=>
+            {"cellular_material.extraction_process"=>"DNA & RNA QIAcube"}
+          }],
+          [{"samples.extraction.manual_dna_and_rna.input_tube_nap"=>
+           {"cellular_material.extraction_process"=>"DNA & RNA Manual", "cellular_material.lysed"=>false},
+          }],
+          [{"samples.extraction.qiacube_dna_and_rna.input_tube_nap"=>
+             {"cellular_material.extraction_process"=>"RNA QIAcube"}
+          }]
+        ]
+      }
+    }
+
     let(:order_settings) { {
       "user_uuid" => "66666666-2222-4444-9999-000000000000",
       "study_uuid" => "55555555-2222-3333-6666-777777777777",
       "cost_code" => "cost code",
       "input_tube_role" => "role"
     }}
-    let(:creator) { described_class.new(order_settings, {}).tap do |c|
+    let(:creator) { described_class.new(order_settings, {}, ruleset).tap do |c|
       c.stub(:post) { |a| a }
       c.stub(:get) { mocked_tubes }
     end
@@ -62,8 +82,8 @@ module Lims::OrderManagementApp
           :pipeline => 'Samples',
           :cost_code => "cost code",
           :sources => {
-            'samples.extraction.manual.dna_and_rna.input_tube_nap'  => [ '11111111-2222-3333-4444-666666666666' ],
-            'samples.extraction.qiacube.dna_and_rna.input_tube_nap' => [ '11111111-2222-3333-4444-888888888888' ]
+            'samples.extraction.manual_dna_and_rna.input_tube_nap'  => [ '11111111-2222-3333-4444-666666666666' ],
+            'samples.extraction.qiacube_dna_and_rna.input_tube_nap' => [ '11111111-2222-3333-4444-888888888888' ]
           }
         }
       } }

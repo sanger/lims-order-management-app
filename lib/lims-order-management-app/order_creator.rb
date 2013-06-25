@@ -18,13 +18,14 @@ module Lims::OrderManagementApp
     attribute :cost_code, String, :required => true, :writer => :private
 
     # @param [Hash] api_settings
-    def initialize(order_settings, api_settings)
+    def initialize(order_settings, api_settings, rule_settings)
       url = api_settings["url"]      
       @input_tube_role = order_settings["input_tube_role"]
       @user_uuid = order_settings["user_uuid"]
       @study_uuid = order_settings["study_uuid"]
       @cost_code = order_settings["cost_code"]
       initialize_api(url)
+      initialize_rules(rule_settings)
     end
 
     # @param [Array] samples
