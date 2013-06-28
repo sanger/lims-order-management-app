@@ -21,10 +21,10 @@ module Lims::OrderManagementApp
       '*.*.bulkcreatesample.*', '*.*.bulkupdatesample.*' 
     ].map { |k| Regexp.new(k.gsub(/\./, "\\.").gsub(/\*/, "[^\.]*")) }
 
-    def initialize(order_settings, amqp_settings, api_settings)
+    def initialize(order_settings, amqp_settings, api_settings, rule_settings)
       @queue_name = amqp_settings.delete("queue_name")
       consumer_setup(amqp_settings)
-      @order_creator = OrderCreator.new(order_settings, api_settings)
+      @order_creator = OrderCreator.new(order_settings, api_settings, rule_settings)
       set_queue
     end
 
