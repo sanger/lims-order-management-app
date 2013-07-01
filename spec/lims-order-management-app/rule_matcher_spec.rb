@@ -14,7 +14,7 @@ module Lims::OrderManagementApp
       { "rules" =>
         [
           [{"samples.extraction.manual_dna_and_rna.input_tube_nap"=>
-            {"cellular_material.extraction_process"=>"DNA & RNA Manual"},
+            {"cellular_material.extraction_process"=>"DNA & RNA Manual"}
           }],
           [{"samples.extraction.qiacube_dna_and_rna.input_tube_nap"=>
             {"cellular_material.extraction_process"=>"DNA & RNA QIAcube"}
