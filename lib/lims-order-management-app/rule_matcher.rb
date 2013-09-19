@@ -3,27 +3,25 @@ module Lims::OrderManagementApp
    
     NoMatchingRule = Class.new(StandardError)
 
-    CELL_PELLET = "Cell Pellet"
-    DNA_RNA_EXTRACTION = 'DNA & RNA Extraction'
-
-    RULES = [
-      {:sample_type => CELL_PELLET, :lysed => true} => DNA_RNA_EXTRACTION
-    ]
+    def initialize_rules(rule_settings)
+      @ruleset = rule_settings["rules"]
+    end
 
     # @param [Lims::ManagementApp::Sample] sample
     # @return [String]
     def matching_rule(sample)
-      RULES.each do |rule|
-        rule.each do |criteria, pipeline|
-          if criteria[:sample_type] == sample.sample_type &&
-            criteria[:lysed] = sample.cellular_material.lysed
-            return pipeline
+      @ruleset.each do |ruleset_items|
+        ruleset_items.each do |rules|
+          role = rules.keys.first
+          rule_items = rules.values[0]
+          return role if rule_items.all? do |key, value|
+            value_from_sample = key.split('.').inject(sample) { |v,f| v && v[f.to_sym] }
+            value_from_sample == value
           end
         end
       end
 
       raise NoMatchingRule
     end
-
   end
 end
