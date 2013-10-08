@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: c5eafa55e733b34be7ffcfd10662e3c766394809
+  revision: 49afa2a7919ec3771e6c5e5c650fca65f214487a
   branch: uat
   specs:
-    lims-core (2.5.0.pre)
+    lims-core (2.5.1.pre)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -33,10 +33,10 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-management-app.git
-  revision: 4dfc046a2879a0b949e75facb606daaf4d3fb0da
+  revision: 6e2a68d53f8afecb9a96bb08f03cf5134b65e424
   branch: uat
   specs:
-    lims-management-app (1.7.0.rc1)
+    lims-management-app (1.8.2.pre)
       bunny (= 0.9.0.pre10)
       json
 
@@ -125,8 +125,8 @@ DEPENDENCIES
   debugger
   debugger-completion
   lims-busclient (~> 0.4.0.rc1)!
-  lims-core (~> 2.5.0.pre)!
-  lims-management-app (~> 1.7.0.rc1)!
+  lims-core (~> 2.5.1.pre)!
+  lims-management-app (~> 1.8.2.pre)!
   lims-order-management-app!
   psd_logger!
   rake
