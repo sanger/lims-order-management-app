@@ -18,7 +18,8 @@ module Lims::OrderManagementApp
     SAMPLE_PUBLISHED_STATE = "published"
     EXPECTED_ROUTING_KEY_PATTERNS = [
       '*.*.sample.create', '*.*.sample.updatesample', 
-      '*.*.bulkcreatesample.*', '*.*.bulkupdatesample.*' 
+      '*.*.bulkcreatesample.*', '*.*.bulkupdatesample.*',
+      '*.*.samplecollection.*'
     ].map { |k| Regexp.new(k.gsub(/\./, "\\.").gsub(/\*/, "[^\.]*")) }
 
     def initialize(order_settings, amqp_settings, api_settings, rule_settings)
@@ -63,11 +64,11 @@ module Lims::OrderManagementApp
       begin
         samples = sample_resource(payload)
         before_filter!(samples)
-        order_creator.execute(samples)
+        order_creator.create!(samples)
       rescue NoSamplePublished, RuleMatcher::NoMatchingRule => e
         metadata.reject
         log.error("Sample message rejected: #{e}")
-      rescue OrderCreator::TubeNotFound => e
+      rescue OrderCreator::SampleContainerNotFound => e
         metadata.reject(:requeue => true)
         log.error("Sample message requeued: #{e}")
       else
