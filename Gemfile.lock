@@ -1,9 +1,9 @@
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: df65402894bf40c0b545cf9e6d19cf4758e0865c
+  revision: b3c08da23a420a3273cfc8a0ce94952434a127f6
   branch: development
   specs:
-    lims-core (3.0.0.3.2)
+    lims-core (3.1.0.0.0)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
@@ -44,7 +44,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-order-management-app (0.4.0)
+    lims-order-management-app (0.5.0)
       aequitas
       amqp
       facets
@@ -127,7 +127,7 @@ DEPENDENCIES
   debugger
   debugger-completion
   lims-busclient (~> 0.4.0)!
-  lims-core (~> 3.0)!
+  lims-core (~> 3.1)!
   lims-management-app (~> 3.0)!
   lims-order-management-app!
   psd_logger!
