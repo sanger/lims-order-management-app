@@ -80,8 +80,7 @@ module Lims::OrderManagementApp
           :sample => {:uuid => sample_uuids}
         }
       }}
-      # TODO CHANGE
-      search = post(url_for("searches", :create), parameters)
+      search = post(url_for("laboratory-searches", :create), parameters)
       result_url = search["search"]["actions"]["first"]
       result = get(result_url)
       result["#{model}s"]
