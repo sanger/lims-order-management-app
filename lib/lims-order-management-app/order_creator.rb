@@ -91,10 +91,9 @@ module Lims::OrderManagementApp
     # @param [Block] block
     def foreach_aliquot_of(model, resource_hash, &block)
       case model.to_sym
-      when :tube then resource_hash["aliquots"].each { |aliquot| block.call(aliquot) } 
+      when :tube, :filter_paper then resource_hash["aliquots"].each { |aliquot| block.call(aliquot) } 
       else
-        element = model.to_sym == :filter_paper ? "locations" : "wells"
-        resource_hash[element].each do |_, aliquots|
+        resource_hash["wells"].each do |_, aliquots|
            aliquots.each { |aliquot| block.call(aliquot) }
         end
       end
