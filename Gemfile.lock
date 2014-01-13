@@ -44,7 +44,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-order-management-app (0.6.0)
+    lims-order-management-app (0.7.0)
       aequitas
       amqp
       facets
@@ -92,7 +92,7 @@ GEM
     json (1.8.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
-    mime-types (1.25)
+    mime-types (2.0)
     modularity (0.6.1)
     mysql (2.9.1)
     rack (1.5.2)
