@@ -45,7 +45,6 @@ module Lims::OrderManagementApp
     }
 
     let(:order_settings) { {
-      "user_uuid" => "66666666-2222-4444-9999-000000000000",
       "study_uuid" => "55555555-2222-3333-6666-777777777777",
       "cost_code" => "cost code",
       "input_tube_role" => "role"
@@ -78,7 +77,6 @@ module Lims::OrderManagementApp
 
         let(:expected_order_parameters) { {
           :order => {
-            :user_uuid => "66666666-2222-4444-9999-000000000000",
             :study_uuid => "55555555-2222-3333-6666-777777777777",
             :pipeline => 'Samples',
             :cost_code => "cost code",
@@ -112,7 +110,6 @@ module Lims::OrderManagementApp
 
         let(:expected_order_parameters) { {
           :order => {
-            :user_uuid => "66666666-2222-4444-9999-000000000000",
             :study_uuid => "55555555-2222-3333-6666-777777777777",
             :pipeline => 'Samples',
             :cost_code => "cost code",
@@ -151,7 +148,6 @@ module Lims::OrderManagementApp
 
         let(:expected_order_parameters) { {
           :order => {
-            :user_uuid => "66666666-2222-4444-9999-000000000000",
             :study_uuid => "55555555-2222-3333-6666-777777777777",
             :pipeline => 'Samples',
             :cost_code => "cost code",

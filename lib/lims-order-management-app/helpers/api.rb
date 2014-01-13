@@ -13,8 +13,8 @@ module Lims::OrderManagementApp
           JSON.parse(response)
         end
 
-        def post(url, parameters)
-          response = RestClient.post(url, parameters.to_json, HEADERS)
+        def post(url, parameters, extra_headers = {})
+          response = RestClient.post(url, parameters.to_json, HEADERS.merge(extra_headers))
           JSON.parse(response)
         end
       end
