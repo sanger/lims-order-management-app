@@ -13,7 +13,10 @@ module Lims::OrderManagementApp
           JSON.parse(response)
         end
 
+        # According to RestClient documentation, it is necessary 
+        # to set multipart to true when sending custom headers.
         def post(url, parameters, extra_headers = {})
+          extra_headers.merge!(:multipart => true) unless extra_headers.empty?
           response = RestClient.post(url, parameters.to_json, HEADERS.merge(extra_headers))
           JSON.parse(response)
         end
