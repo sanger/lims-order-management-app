@@ -11,14 +11,14 @@ module Lims::OrderManagementApp
 
     SampleContainerNotFound = Class.new(StandardError)
 
-    attribute :user_uuid, String, :required => true, :writer => :private
+    attribute :user_email, String, :required => true, :writer => :private
     attribute :study_uuid, String, :required => true, :writer => :private
     attribute :cost_code, String, :required => true, :writer => :private
 
     # @param [Hash] api_settings
     def initialize(order_settings, api_settings, rule_settings)
       url = api_settings["url"]      
-      @user_uuid = order_settings["user_uuid"]
+      @user_email = order_settings["user_email"]
       @study_uuid = order_settings["study_uuid"]
       @cost_code = order_settings["cost_code"]
       initialize_api(url)
@@ -108,7 +108,6 @@ module Lims::OrderManagementApp
       end
 
       {:order => {}.tap do |p|
-        p[:user_uuid] = user_uuid 
         p[:study_uuid] = study_uuid 
         p[:pipeline] = 'Samples'
         p[:cost_code] = cost_code 
@@ -119,7 +118,7 @@ module Lims::OrderManagementApp
 
     # @param [Hash] order_parameters
     def post_order(order_parameters)
-      post(url_for(:orders, :create), order_parameters)
+      post(url_for(:orders, :create), order_parameters, {"user-email" => user_email})
     end
   end
 end
