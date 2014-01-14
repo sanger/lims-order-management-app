@@ -21,7 +21,7 @@ module Lims::OrderManagementApp
       @user_email = order_settings["user_email"]
       @study_uuid = order_settings["study_uuid"]
       @cost_code = order_settings["cost_code"]
-      initialize_api(url)
+      initialize_api(url, @user_email)
       initialize_rules(rule_settings)
     end
 
@@ -80,7 +80,7 @@ module Lims::OrderManagementApp
           :sample => {:uuid => sample_uuids}
         }
       }}
-      search = post(url_for("laboratory-searches", :create), parameters)
+      search = post(url_for("searches", :create), parameters)
       result_url = search["search"]["actions"]["first"]
       result = get(result_url)
       result["#{model}s"]
@@ -118,7 +118,7 @@ module Lims::OrderManagementApp
 
     # @param [Hash] order_parameters
     def post_order(order_parameters)
-      post(url_for(:orders, :create), order_parameters, {"user-email" => user_email})
+      post(url_for(:orders, :create), order_parameters)
     end
   end
 end
