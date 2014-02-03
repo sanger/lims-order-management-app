@@ -2,6 +2,7 @@ module Lims::OrderManagementApp
   module RuleMatcher
    
     NoMatchingRule = Class.new(StandardError)
+    InvalidExtractionProcessField = Class.new(StandardError)
     SampleExtractionProcessField = "cellular_material.extraction_process"
 
     def initialize_rules(rule_settings)
@@ -29,6 +30,8 @@ module Lims::OrderManagementApp
           next unless valid
 
           # Extraction process rule 
+          extraction_process = sample[:cellular_material][:extraction_process]
+          raise InvalidExtractionProcessField unless extraction_process.is_a?(Hash)
           sample[:cellular_material][:extraction_process].each do |sample_extraction_process, container_uuids|
             if sample_extraction_process == rule_extraction_process 
               container_uuids.each do |container_uuid|
