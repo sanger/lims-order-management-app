@@ -131,11 +131,19 @@ module Lims::OrderManagementApp
 
 
     context "invalid context" do
+      let(:samples) {[
+        {
+          :sample => Lims::ManagementApp::Sample.new({
+            :cellular_material => {:extraction_process => 'DNA & RNA Manual'}
+          }), 
+          :uuid => '11111111-0000-0000-0000-111111111111'
+        }
+      ]}
+
       it "raises an error" do
-        pending
         expect do
           creator.create!(samples)
-        end.to raise_error(OrderCreator::SampleContainerNotFound)
+        end.to raise_error(RuleMatcher::InvalidExtractionProcessField)
       end
     end
   end

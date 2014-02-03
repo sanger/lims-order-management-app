@@ -5,8 +5,11 @@ require 'lims-management-app/sample/sample'
 module Lims::OrderManagementApp
   describe RuleMatcher do
     let(:matcher) {
-      Class.new { include RuleMatcher }.new.tap do |rule_matcher|
-        rule_matcher.initialize_rules(ruleset)
+      Class.new do 
+        include RuleMatcher 
+        attr_accessor :ruleset 
+      end.new.tap do |rule_matcher|
+        rule_matcher.ruleset = ruleset["rules"]
       end
     }
 
@@ -33,7 +36,7 @@ module Lims::OrderManagementApp
       context "with valid extraction_process field" do
         shared_examples_for "matching a rule" do |sample_data, role|
           it "returns the role #{role} for the sample parameter #{sample_data.inspect}" do
-            matcher.match_rule(sample_data).should == role
+            matcher.send(:match_rule, sample_data).should == role
           end
         end
 
@@ -58,7 +61,7 @@ module Lims::OrderManagementApp
         shared_examples_for "failing to match a rule" do |sample_data|
           it "raises an error" do
             expect do
-              matcher.match_rule(sample_data)
+              matcher.send(:match_rule, sample_data)
             end.to raise_error(RuleMatcher::InvalidExtractionProcessField)
           end
         end
@@ -79,7 +82,7 @@ module Lims::OrderManagementApp
 
       it "raises an exception" do
         expect do
-          matcher.match_rule(sample)
+          matcher.send(:match_rule, sample)
         end.to raise_error(RuleMatcher::NoMatchingRule)
       end
     end
