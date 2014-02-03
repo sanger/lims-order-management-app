@@ -19,8 +19,8 @@ module Lims::OrderManagementApp
           [{"samples.extraction.qiacube_dna_and_rna.input_tube_nap"=>
             {"cellular_material.extraction_process"=>"DNA & RNA QIAcube"}
           }],
-          [{"samples.extraction.manual_dna_and_rna.input_tube_nap"=>
-           {"cellular_material.extraction_process"=>"DNA & RNA Manual", "cellular_material.lysed"=>false},
+          [{"samples.extraction.manual_dna_and_rna.input_tube_nap2"=>
+           {"cellular_material.extraction_process"=>"DNA & RNA Manual 2", "cellular_material.lysed"=>true},
           }],
           [{"samples.extraction.qiacube_dna_and_rna.input_tube_nap"=>
              {"cellular_material.extraction_process"=>"RNA QIAcube"}
@@ -30,24 +30,35 @@ module Lims::OrderManagementApp
     }
 
     context "rule matched" do
-      let(:samples_to_roles) { {
-        'DNA & RNA Manual'  => 'samples.extraction.manual_dna_and_rna.input_tube_nap',
-        'DNA & RNA QIAcube' => 'samples.extraction.qiacube_dna_and_rna.input_tube_nap'
-      } }
-
-      it "returns the correct pipeline" do
-        samples_to_roles.each do |process, role|
-          matcher.matching_rule({ :cellular_material => { :extraction_process => process } }).should == role
+      shared_examples_for "matching a rule" do |sample_data, role|
+        it "returns the role #{role} for the sample parameter #{sample_data.inspect}" do
+          matcher.matching_rule(sample_data).should == role
         end
       end
+
+      it_behaves_like "matching a rule", 
+        {:cellular_material => {:extraction_process => {"DNA & RNA Manual" => ["11111111-2222-3333-4444-555555555555"]}}}, 
+        {"11111111-2222-3333-4444-555555555555" => "samples.extraction.manual_dna_and_rna.input_tube_nap"}
+
+      it_behaves_like "matching a rule", 
+        {:cellular_material => {:extraction_process => {"DNA & RNA Manual 2" => ["11111111-2222-3333-4444-666666666666"]}, :lysed => true}}, 
+        {"11111111-2222-3333-4444-666666666666" => "samples.extraction.manual_dna_and_rna.input_tube_nap2"}
+
+      it_behaves_like "matching a rule", 
+        {:cellular_material => {:extraction_process => {"DNA & RNA Manual" => ["11111111-2222-3333-4444-555555555555","11111111-2222-3333-4444-666666666666"], "DNA & RNA QIAcube" => ["11111111-2222-3333-4444-777777777777"]}}}, 
+        {
+          "11111111-2222-3333-4444-555555555555" => "samples.extraction.manual_dna_and_rna.input_tube_nap", 
+          "11111111-2222-3333-4444-666666666666" => "samples.extraction.manual_dna_and_rna.input_tube_nap",
+          "11111111-2222-3333-4444-777777777777" => "samples.extraction.qiacube_dna_and_rna.input_tube_nap"
+        }
     end
 
     context "no rule matched" do
-      let(:sample) { Lims::ManagementApp::Sample.new(
-        { :sample_type        => "RNA",
-          :cellular_material  => {:lysed => false, :extraction_process => "DNA & RNA Extraction"}
-        })
-      }
+      let(:sample) { Lims::ManagementApp::Sample.new({ 
+        :sample_type => "RNA",
+        :cellular_material  => {:lysed => false, :extraction_process => {"DNA & RNA Extraction" => ["11111111-2222-3333-4444-555555555555"]}}
+      })}
+
       it "raises an exception" do
         expect do
           matcher.matching_rule(sample)
