@@ -1,0 +1,7 @@
+routing_keys:
+  - '*.*.sample.createsample'
+  - '*.*.sample.create'
+  - '*.*.sample.updatesample'
+  - '*.*.bulkcreatesample.*'
+  - '*.*.bulkupdatesample.*'
+  - '*.*.samplecollection.*'
