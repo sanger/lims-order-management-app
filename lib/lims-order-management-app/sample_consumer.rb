@@ -2,6 +2,7 @@ require 'lims-busclient'
 require 'common'
 require 'lims-order-management-app/sample_json_decoder'
 require 'lims-order-management-app/order_creator'
+
 module Lims::OrderManagementApp
   class SampleConsumer
     include Lims::BusClient::Consumer
@@ -14,13 +15,7 @@ module Lims::OrderManagementApp
     attribute :order_creator, OrderCreator, :required => true, :writer => :private, :reader => :private
 
     NoSamplePublished = Class.new(StandardError)
-
     SAMPLE_PUBLISHED_STATE = "published"
-    EXPECTED_ROUTING_KEY_PATTERNS = [
-      '*.*.sample.create', '*.*.sample.updatesample', 
-      '*.*.bulkcreatesample.*', '*.*.bulkupdatesample.*',
-      '*.*.samplecollection.*'
-    ].map { |k| Regexp.new(k.gsub(/\./, "\\.").gsub(/\*/, "[^\.]*")) }
 
     def initialize(order_settings, amqp_settings, api_settings, rule_settings)
       @queue_name = amqp_settings.delete("queue_name")
@@ -48,13 +43,8 @@ module Lims::OrderManagementApp
     def set_queue
       self.add_queue(queue_name) do |metadata, payload|
         log.info("Message received with the routing key: #{metadata.routing_key}") 
-        if expected_message?(metadata.routing_key)
-          log.debug("Processing message with routing key: '#{metadata.routing_key}' and payload: #{payload}") 
-          consume_message(metadata, payload)
-        else
-          metadata.reject
-          log.debug("Message rejected: unexpected message (routing key: #{metadata.routing_key})") 
-        end
+        log.debug("Processing message with routing key: '#{metadata.routing_key}' and payload: #{payload}") 
+        consume_message(metadata, payload)
       end
     end
 
@@ -75,15 +65,6 @@ module Lims::OrderManagementApp
         metadata.ack
         log.info("Sample message processed and acknowledged. Order created.")
       end
-    end
-
-    # @param [String] routing_key
-    # @return [Bool]
-    def expected_message?(routing_key)
-      EXPECTED_ROUTING_KEY_PATTERNS.each do |pattern|
-        return true if routing_key.match(pattern)
-      end
-      false
     end
   end
 end
