@@ -9,7 +9,9 @@ module Lims::OrderManagementApp
     include Helpers::API
     include Lims::OrderManagementApp::RuleMatcher
 
-    SampleContainerNotFound = Class.new(StandardError)
+    InvalidExtractionProcessField = Class.new(StandardError)
+    UuidPattern = [8, 4, 4, 4, 12]
+    UuidFormat = /#{UuidPattern.map { |n| "(\\w{#{n}})"}.join("-")}/i
 
     attribute :user_email, String, :required => true, :writer => :private
     attribute :study_uuid, String, :required => true, :writer => :private
@@ -40,10 +42,31 @@ module Lims::OrderManagementApp
     def container_roles(samples)
       {}.tap do |result|
         samples.each do |sample_data|
+          validate_sample_extraction_process!(sample_data[:sample], sample_data[:uuid])
           match_rule(sample_data[:sample]).each do |container_uuid, role|
             result[container_uuid] = role unless result.has_key?(container_uuid)
           end
         end
+      end
+    end
+
+    # @param [Lims::ManagementApp::Sample] sample
+    # @param [String] sample_uuid
+    # @raise [InvalidExtractionProcessField]
+    def validate_sample_extraction_process!(sample, sample_uuid)
+      begin
+        # skip the validation if there is no extraction process field
+        return unless sample.cellular_material && sample.cellular_material[:extraction_process]
+        extraction_process = sample[:cellular_material][:extraction_process] 
+        raise "Extraction process should be a hash" unless extraction_process.is_a?(Hash)
+
+        extraction_process.each do |sample_extraction_process, container_uuids|
+          unless container_uuids.is_a?(Array) && container_uuids.all? { |uuid| uuid =~ UuidFormat }      
+            raise "Container uuids should be valid uuids in an array"
+          end
+        end
+      rescue StandardError => e
+        raise InvalidExtractionProcessField, "The extraction_process field is invalid for the sample #{sample_uuid} (#{e.message}): #{extraction_process.inspect}" 
       end
     end
 

@@ -26,7 +26,6 @@ module Lims::OrderManagementApp
 
     def set_logger(logger)
       @log = logger
-      @order_creator.set_logger(logger)
     end
 
     private
@@ -56,12 +55,9 @@ module Lims::OrderManagementApp
         samples = sample_resource(payload)
         before_filter!(samples)
         order_creator.create!(samples)
-      rescue NoSamplePublished, RuleMatcher::NoMatchingRule, RuleMatcher::InvalidExtractionProcessField => e
+      rescue NoSamplePublished, RuleMatcher::NoMatchingRule, OrderCreator::InvalidExtractionProcessField => e
         metadata.reject
         log.error("Sample message rejected: #{e}")
-      rescue OrderCreator::SampleContainerNotFound => e
-        metadata.reject(:requeue => true)
-        log.error("Sample message requeued: #{e}")
       else
         metadata.ack
         log.info("Sample message processed and acknowledged. Order created.")

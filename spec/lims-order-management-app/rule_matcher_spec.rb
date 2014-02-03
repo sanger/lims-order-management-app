@@ -56,22 +56,6 @@ module Lims::OrderManagementApp
             "11111111-2222-3333-4444-777777777777" => "samples.extraction.qiacube_dna_and_rna.input_tube_nap"
           }
       end
-
-      context "with invalid extraction_process field" do
-        shared_examples_for "failing to match a rule" do |sample_data|
-          it "raises an error" do
-            expect do
-              matcher.send(:match_rule, sample_data)
-            end.to raise_error(RuleMatcher::InvalidExtractionProcessField)
-          end
-        end
-
-        it_behaves_like "failing to match a rule", 
-          {:cellular_material => {:extraction_process => "DNA & RNA Manual"}}
-
-        it_behaves_like "failing to match a rule",
-          {:cellular_material => {:extraction_process => {"DNA & RNA Manual 2" => ["bad_uuid_format"]}, :lysed => true}}
-      end
     end
 
     context "when no rule is matched" do

@@ -129,21 +129,44 @@ module Lims::OrderManagementApp
       end
     end
 
+    context "with invalid context" do
+      context "with invalid extraction_process field" do
+        shared_examples_for "failing to validate extraction process field" do |samples|
+          it "raises an error" do
+            expect do
+              creator.create!(samples)
+            end.to raise_error(OrderCreator::InvalidExtractionProcessField)
+          end
+        end
 
-    context "invalid context" do
-      let(:samples) {[
-        {
-          :sample => Lims::ManagementApp::Sample.new({
-            :cellular_material => {:extraction_process => 'DNA & RNA Manual'}
-          }), 
-          :uuid => '11111111-0000-0000-0000-111111111111'
-        }
-      ]}
+        it_behaves_like "failing to validate extraction process field", [
+          {
+            :sample => Lims::ManagementApp::Sample.new(:cellular_material => {:extraction_process => 'DNA & RNA Manual'}), 
+            :uuid => '11111111-0000-0000-0000-111111111111'
+          }
+        ]
 
-      it "raises an error" do
-        expect do
-          creator.create!(samples)
-        end.to raise_error(RuleMatcher::InvalidExtractionProcessField)
+        it_behaves_like "failing to validate extraction process field", [
+          {
+            :sample => Lims::ManagementApp::Sample.new(:cellular_material => {:extraction_process => {'DNA & RNA Manual' => ["dummy uuid"]}}), 
+            :uuid => '11111111-0000-0000-0000-111111111111'
+          }
+        ]
+      end
+
+      context "with a sample without extraction process field" do
+        let(:samples) {[
+          {
+            :sample => Lims::ManagementApp::Sample.new, 
+            :uuid => '11111111-0000-0000-0000-111111111111'
+          }
+        ]}
+
+        it "raises an exception" do
+          expect do
+            creator.create!(samples)
+          end.to raise_error(RuleMatcher::NoMatchingRule)
+        end
       end
     end
   end
