@@ -7,9 +7,7 @@ module Lims::OrderManagementApp
     UuidPattern = [8, 4, 4, 4, 12]
     UuidFormat = /#{UuidPattern.map { |n| "(\\w{#{n}})"}.join("-")}/i
 
-    def initialize_rules(rule_settings)
-      @ruleset = rule_settings["rules"]
-    end
+    private
 
     # @param [Lims::ManagementApp::Sample] sample
     # @return [Hash]
@@ -33,7 +31,9 @@ module Lims::OrderManagementApp
 
           # Extraction process rule 
           extraction_process = sample[:cellular_material][:extraction_process]
-          raise InvalidExtractionProcessField unless extraction_process_valid?(extraction_process)
+          unless extraction_process_valid?(extraction_process)
+            raise InvalidExtractionProcessField, "The extraction_process field is invalid: #{extraction_process.inspect}" 
+          end
           sample[:cellular_material][:extraction_process].each do |sample_extraction_process, container_uuids|
             if sample_extraction_process == rule_extraction_process 
               container_uuids.each do |container_uuid|
@@ -47,8 +47,6 @@ module Lims::OrderManagementApp
       raise NoMatchingRule if item_roles.empty?
       item_roles
     end
-
-    private
 
     # @param [Hash] extraction_process
     # @return [Bool]

@@ -21,8 +21,8 @@ module Lims::OrderManagementApp
       @user_email = order_settings["user_email"]
       @study_uuid = order_settings["study_uuid"]
       @cost_code = order_settings["cost_code"]
+      @ruleset = rule_settings["rules"]
       initialize_api(url, @user_email)
-      initialize_rules(rule_settings)
     end
 
     # @param [Array] samples
@@ -40,12 +40,8 @@ module Lims::OrderManagementApp
     def container_roles(samples)
       {}.tap do |result|
         samples.each do |sample_data|
-          begin
-            match_rule(sample_data[:sample]).each do |container_uuid, role|
-              result[container_uuid] = role unless result.has_key?(container_uuid)
-            end
-          rescue InvalidExtractionProcessField => e
-
+          match_rule(sample_data[:sample]).each do |container_uuid, role|
+            result[container_uuid] = role unless result.has_key?(container_uuid)
           end
         end
       end
