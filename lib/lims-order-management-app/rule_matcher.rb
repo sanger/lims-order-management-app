@@ -4,6 +4,8 @@ module Lims::OrderManagementApp
     NoMatchingRule = Class.new(StandardError)
     InvalidExtractionProcessField = Class.new(StandardError)
     SampleExtractionProcessField = "cellular_material.extraction_process"
+    UuidPattern = [8, 4, 4, 4, 12]
+    UuidFormat = /#{UuidPattern.map { |n| "(\\w{#{n}})"}.join("-")}/i
 
     def initialize_rules(rule_settings)
       @ruleset = rule_settings["rules"]
@@ -13,7 +15,7 @@ module Lims::OrderManagementApp
     # @return [Hash]
     # @example returned value: {"11111111-2222-3333-4444-555555555555" => "samples.extraction.manual_dna_and_rna.input_tube_nap"}
     # @raise [NoMatchingRule]
-    def matching_rule(sample)
+    def match_rule(sample)
       item_roles = {}
       @ruleset.each do |ruleset_items|
         ruleset_items.each do |rules|
@@ -31,7 +33,7 @@ module Lims::OrderManagementApp
 
           # Extraction process rule 
           extraction_process = sample[:cellular_material][:extraction_process]
-          raise InvalidExtractionProcessField unless extraction_process.is_a?(Hash)
+          raise InvalidExtractionProcessField unless extraction_process_valid?(extraction_process)
           sample[:cellular_material][:extraction_process].each do |sample_extraction_process, container_uuids|
             if sample_extraction_process == rule_extraction_process 
               container_uuids.each do |container_uuid|
@@ -44,6 +46,20 @@ module Lims::OrderManagementApp
 
       raise NoMatchingRule if item_roles.empty?
       item_roles
+    end
+
+    private
+
+    # @param [Hash] extraction_process
+    # @return [Bool]
+    def extraction_process_valid?(extraction_process)
+      return false unless extraction_process.is_a?(Hash)
+      extraction_process.each do |sample_extraction_process, container_uuids|
+        unless container_uuids.is_a?(Array) && container_uuids.all? { |uuid| uuid =~ UuidFormat }      
+          return false
+        end
+      end
+      true
     end
   end
 end
