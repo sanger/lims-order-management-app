@@ -44,7 +44,7 @@ GIT
 PATH
   remote: .
   specs:
-    lims-order-management-app (0.9.0)
+    lims-order-management-app (1.0.0)
       aequitas
       amqp
       facets
