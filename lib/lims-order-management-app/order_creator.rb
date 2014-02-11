@@ -40,8 +40,12 @@ module Lims::OrderManagementApp
     def container_roles(samples)
       {}.tap do |result|
         samples.each do |sample_data|
-          matching_rule(sample_data[:sample]).each do |container_uuid, role|
-            result[container_uuid] = role unless result.has_key?(container_uuid)
+          begin
+            matching_rule(sample_data[:sample]).each do |container_uuid, role|
+              result[container_uuid] = role unless result.has_key?(container_uuid)
+            end
+          rescue InvalidExtractionProcessField => e
+
           end
         end
       end
