@@ -1,19 +1,27 @@
 GIT
   remote: http://github.com/sanger/lims-core.git
-  revision: b3c08da23a420a3273cfc8a0ce94952434a127f6
+  revision: a731ee1a4378e4e068b35493a03b7b0324fb4520
   branch: development
   specs:
-    lims-core (3.1.0.0.0)
+    lims-core (3.1.0.7.4)
       active_support
       aequitas
       bunny (= 0.9.0.pre10)
       dm-validations
       facets (= 2.9.3)
-      modularity
+      modularity (= 0.6.1)
       sequel
       state_machine
       uuid
       virtus (= 0.2.0)
+
+GIT
+  remote: http://github.com/sanger/lims-exception-notifier-app.git
+  revision: 4e789cdb62446d6b0b3496046350a111d245fd38
+  branch: master
+  specs:
+    lims-exception-notifier-app (0.1.2)
+      mustache (~> 0.99.4)
 
 GIT
   remote: http://github.com/sanger/psd_logger.git
@@ -23,10 +31,10 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-busclient.git
-  revision: ddba1b2a3b34b9d1f01c55f555a621d73803b300
+  revision: 22c3a58f42f58b166b7949a2bf1c3c2f55c331c7
   branch: development
   specs:
-    lims-busclient (0.4.0)
+    lims-busclient (0.4.1)
       aequitas
       amqp
       facets
@@ -34,17 +42,16 @@ GIT
 
 GIT
   remote: https://github.com/sanger/lims-management-app.git
-  revision: 84b972d37d8ddf41bbcfc7bacb18c6fdc29130c6
+  revision: 9002ae0dcb16eb88800a97c913790043ae27410d
   branch: development
   specs:
-    lims-management-app (3.0.0)
+    lims-management-app (3.3.0)
       bunny (= 0.9.0.pre10)
-      json
 
 PATH
   remote: .
   specs:
-    lims-order-management-app (1.0.1)
+    lims-order-management-app (1.0.2)
       aequitas
       amqp
       facets
@@ -89,11 +96,11 @@ GEM
       dm-core (~> 1.2.0)
     eventmachine (1.0.3)
     facets (2.9.3)
-    json (1.8.0)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
     mime-types (2.0)
     modularity (0.6.1)
+    mustache (0.99.5)
     mysql (2.9.1)
     rack (1.5.2)
     rake (10.0.4)
@@ -128,6 +135,7 @@ DEPENDENCIES
   debugger-completion
   lims-busclient (~> 0.4.0)!
   lims-core (~> 3.1)!
+  lims-exception-notifier-app (~> 0.1.2)!
   lims-management-app (~> 3.0)!
   lims-order-management-app!
   psd_logger!
