@@ -1,5 +1,5 @@
 defaults: &defaults
-  user_uuid: "66666666-2222-4444-9999-000000000000" 
+  user_email: "s2-order-management-app" 
   study_uuid: "55555555-2222-3333-6666-777777777777"
   cost_code: "cost code"
 

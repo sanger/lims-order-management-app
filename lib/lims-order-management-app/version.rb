@@ -1,5 +1,5 @@
 module Lims
   module OrderManagementApp
-    VERSION = "0.7.0.pre"
+    VERSION = "1.0.3.pre"
   end
 end
